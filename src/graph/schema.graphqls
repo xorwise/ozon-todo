@@ -2,18 +2,6 @@
 #
 # https://gqlgen.com/getting-started/
 
-# type Todo {
-#   id: ID!
-#   text: String!
-#   done: Boolean!
-#   user: User!
-# }
-#
-# input NewTodo {
-#   text: String!
-#   userId: String!
-# }
-#
 type Query {
   posts(limit: Int, offset: Int): [Post]
   post(id: ID!): Post
@@ -21,8 +9,8 @@ type Query {
 }
 
 type Mutation {
-  addPost(input: AddPostInput!): Post
-  addComment(input: AddCommentInput!): Comment
+  addPost(input: AddPostInput!): Post @isAuthenticated
+  addComment(input: AddCommentInput!): Comment @isAuthenticated
   toggleComments(postId: ID!, allow: Boolean!): Post @isAuthenticated
 }
 
@@ -42,11 +30,10 @@ type Post {
 type Comment {
   id: ID!
   postId: ID!
-  parentId: ID
+  parent: Comment
   author: User!
   content: String!
   createdAt: Time!
-  replies(limit: Int, offset: Int): [Comment]
 }
 
 type User {
@@ -57,13 +44,11 @@ type User {
 input AddPostInput {
   title: String!
   content: String!
-  authorId: ID!
 }
 
 input AddCommentInput {
   postId: ID!
   parentId: ID
-  authorId: ID!
   content: String!
 }
 
