@@ -8,5 +8,4 @@ down:
 	@docker compose --env-file .env -f docker-compose.yml down
 
 test:
-	cd src && go test ./tests/*
-	cd ../
+	cd src && go get github.com/stretchr/testify && go test ./tests/*
